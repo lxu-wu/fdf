@@ -1,4 +1,4 @@
-#include "../inc/fdf.h"
+#include "../../inc/fdf.h"
 
 void	ft_put_pixel(t_ptr *ptr, long x, long y, int color)//, t_camcoor c1, t_camcoor c2)
 {

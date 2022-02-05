@@ -8,7 +8,6 @@
 
 #include <stdio.h>
 
-
 # define WIDTH 1920
 # define HEIGHT 1080
 
@@ -19,23 +18,24 @@ typedef struct s_ptr
 	void	*img;
 }	t_ptr;
 
-typedef	struct s_modelcoor
+typedef	struct s_model
 {
 	long	x;
 	long	y;
 	long	z;
-}	t_modelcoor;
+}	t_model;
 
-typedef	struct s_camcoor
+typedef	struct s_cam
 {
 	long	x;
 	long	y;
-}	t_camcoor;
+}	t_cam;
 
 typedef struct s_coor
 {
-	t_modelcoor		model;
-	t_camcoor		cam;
+	t_model			model;
+	t_cam			cam;
+	int				color;
 	struct s_coor	*prev;
 	struct s_coor	*next;
 }	t_coor;
@@ -43,10 +43,19 @@ typedef struct s_coor
 typedef struct t_data
 {
 	t_ptr	ptr;
-	t_coor	*coor;
+	t_coor	**coor;
 }	t_data;
 
 void	ft_put_pixel(t_ptr *ptr, long x, long y, int color);
-int		ft_exit(t_ptr *ptr);
+int		ft_exit(t_data *data);
+
+t_coor	*ft_coornew(t_model model, int color);
+t_coor	*ft_coorlast(t_coor *coor);
+void	ft_cooradd_back(t_coor **acoor, t_coor *new);
+void	ft_coorclear(t_coor **coor);
+
+t_cam	ft_project(t_model model, float rad);
+
+float	ft_rad(float degree);
 
 #endif
