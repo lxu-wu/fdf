@@ -38,6 +38,8 @@ static int	ft_convert(const char *str, int neg)
 			return (ft_return(neg));
 		str++;
 	}
+	if (!ft_isdigit(*str) && *str != ',')
+		ft_error(1);
 	return (nbr_tot * neg);
 }
 

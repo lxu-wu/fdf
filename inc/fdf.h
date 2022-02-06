@@ -1,15 +1,15 @@
 #ifndef FDF_H
 # define FDF_H
 
-# include <mlx.h>
+# include "mlx.h"
 # include <math.h>
 # include <fcntl.h>
 # include "../libft/libft.h"
 
 #include <stdio.h>
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 1000
+# define HEIGHT 800
 
 typedef struct s_ptr
 {
@@ -48,6 +48,7 @@ typedef struct t_data
 
 void	ft_put_pixel(t_ptr *ptr, long x, long y, int color);
 int		ft_exit(t_data *data);
+void	ft_error(int e);
 
 t_coor	*ft_coornew(t_model model, int color);
 t_coor	*ft_coorlast(t_coor *coor);
@@ -57,5 +58,6 @@ void	ft_coorclear(t_coor **coor);
 t_cam	ft_project(t_model model, float rad);
 
 float	ft_rad(float degree);
+t_coor	**ft_parsing(char *map);
 
 #endif
