@@ -60,5 +60,10 @@ t_cam	ft_project(t_model model, float rad);
 float	ft_rad(float degree);
 t_coor	**ft_parsing(char *map);
 char	*ft_word(char *str);
+char	*ft_strupper(char *str);
+
+void	ft_rotx(t_model *model, float rad);
+void	ft_rotz(t_model *model, float rad);
+void	ft_roty(t_model *model, float rad);
 
 #endif

@@ -22,3 +22,13 @@ char	*ft_word(char *str)
 	return (word);
 
 }
+
+char	*ft_strupper(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		ft_toupper(str[i++]);
+	return (str);
+}

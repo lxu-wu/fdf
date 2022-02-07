@@ -8,7 +8,7 @@ void	ft_put_pixel(t_ptr *ptr, long x, long y, int color)//, t_camcoor c1, t_camc
 	char	*buffer;
 	long	pixel;
 
-	printf("color = %d\n", color);
+	// printf("color = %d\n", color);
 	if (x <= WIDTH && y <= HEIGHT)
 	{
 		buffer = mlx_get_data_addr(ptr->img, &pixel_bits, &size_line, &endian);

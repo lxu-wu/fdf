@@ -8,6 +8,8 @@ void	ft_error(int e)
 		write(2, "Malloc Failed\n", 14);
 	else if (e == 3)
 		perror("open: ");
+	else if (e == 4)
+		write(2, "Invalide color or use prefix 0x/0X\n", 35);
 	else
 		printf("in ft_error %d\n", e);
 	exit(1);

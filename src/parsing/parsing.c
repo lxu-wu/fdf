@@ -1,5 +1,26 @@
 #include "../../inc/fdf.h"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void	ft_extention_valider(char *map)
 {
 	size_t	i;
@@ -14,29 +35,33 @@ void	ft_extention_valider(char *map)
 	}
 }
 
-int	ft_get_color(char *line, char *ibase, size_t *i)
+int	ft_check_str(char c, char *base)
 {
-	int		color;
-	char	*str;
-	size_t	beg;
-	int		tmp;
+	int	i;
 
-	beg = 0;
-	color = 0;
-	while (line[beg])
+	i = 0;
+	while (base[i] && base[i] != c)
+		i++;
+	if (c == base[i])
+		return (i);
+	ft_error(5);
+	return (1);
+}	
+
+int	ft_atoi_base(char *str, char *base)
+{
+	int	n;
+	int	neg;
+	int	base_len;
+
+	base_len = ft_strlen(base);
+	n = 0;
+	while (ft_check_str(*str, base) >= 0)
 	{
-		line[beg] = ft_toupper(line[beg]);
-		beg++;
+		n = n * base_len + ft_check_str(*str, base);
+		str++;
 	}
-	str = ft_calloc(sizeof(char), ((beg) + 1));
-	(*i) += beg--;
-	while (beg && line[beg])
-	{
-		str[beg] =
-	}
-	printf("color == %d\n", color);
-	free(line);
-	return (color);
+	return (n);
 }
 
 t_coor	*ft_modelize(char *line, size_t y)
@@ -61,7 +86,11 @@ t_coor	*ft_modelize(char *line, size_t y)
 		while (line[i] && line[i] != ' ')
 		{
 			if (line[i] == ',' && ++i)
-				color = ft_get_color(ft_word(line), "0123456789ABCDEF",&i);
+			{
+				color = ft_atoi_base(ft_strupper(ft_word(line)), "0123456789ABCDEF");
+				while (line[i] && line[i] != ' ')
+					i++;
+			}
 			else
 				i++;
 		}

@@ -6,7 +6,7 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 21:22:23 by lxu-wu            #+#    #+#             */
-/*   Updated: 2021/10/13 19:06:39 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/07 15:15:12 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ static int	ft_convert(const char *str, int neg)
 			return (ft_return(neg));
 		str++;
 	}
-	if (!ft_isdigit(*str) && *str != ',')
-		ft_error(1);
 	return (nbr_tot * neg);
 }
 
