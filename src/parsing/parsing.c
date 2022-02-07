@@ -14,10 +14,28 @@ void	ft_extention_valider(char *map)
 	}
 }
 
-int	ft_get_color(char *line, size_t *i)
+int	ft_get_color(char *line, char *ibase, size_t *i)
 {
-	int color;
+	int		color;
+	char	*str;
+	size_t	beg;
+	int		tmp;
 
+	beg = 0;
+	color = 0;
+	while (line[beg])
+	{
+		line[beg] = ft_toupper(line[beg]);
+		beg++;
+	}
+	str = ft_calloc(sizeof(char), ((beg) + 1));
+	(*i) += beg--;
+	while (beg && line[beg])
+	{
+		str[beg] =
+	}
+	printf("color == %d\n", color);
+	free(line);
 	return (color);
 }
 
@@ -43,7 +61,7 @@ t_coor	*ft_modelize(char *line, size_t y)
 		while (line[i] && line[i] != ' ')
 		{
 			if (line[i] == ',' && ++i)
-				color = ft_get_color(line, &i);
+				color = ft_get_color(ft_word(line), "0123456789ABCDEF",&i);
 			else
 				i++;
 		}

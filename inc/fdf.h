@@ -59,5 +59,6 @@ t_cam	ft_project(t_model model, float rad);
 
 float	ft_rad(float degree);
 t_coor	**ft_parsing(char *map);
+char	*ft_word(char *str);
 
 #endif
