@@ -49,29 +49,53 @@ void	ft_printcoor(t_coor **coor)
 	}
 }
 
-
-
-void	ft_draw_line(t_ptr ptr, t_cam p1, t_cam p2, int color)
-{
-	
-}
-
-
-void	ft_draw_all(t_data data)
+void	ft_draw_all_line(t_data *data)
 {
 	size_t	i;
 
 	i = 0;
-	while (data.coor[i])
+	while (data->coor[i])
 	{
-		while (data.coor[i])
+		while (data->coor[i])
 		{
-			ft_put_pixel(&data.ptr, data.coor[i]->cam.x, data.coor[i]->cam.y, 0x00FF00FF);
-			(data.coor)[i] = (data.coor)[i]->next;
+			if (data->coor[i]->next)
+				ft_draw_line(data->coor[i]->cam, data->coor[i]->next->cam, 0x00FFFFFF, &data->ptr);
+			if (data->coor[i + 1])
+				ft_draw_line(data->coor[i]->cam, data->coor[i + 1]->cam, 0x00FFFFFF, &data->ptr);
+			data->coor[i] = data->coor[i]->next;
 		}
 		i++;
 	}
-	mlx_put_image_to_window(data.ptr.mlx, data.ptr.win, data.ptr.img, 0, 0);
+}
+
+void	ft_draw_all(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (data->coor[i])
+	{
+		while (data->coor[i])
+		{
+			ft_put_pixel(&data->ptr, data->coor[i]->cam.x, data->coor[i]->cam.y, 0x00FF00FF);
+			(data->coor)[i] = (data->coor)[i]->next;
+		}
+		i++;
+	}
+	i = 0;
+	while (data->coor[i])
+	{
+		while (data->coor[i])
+		{
+			if (data->coor[i]->next)
+				ft_draw_line(data->coor[i]->cam, data->coor[i]->next->cam, 0x00FFFFFF, &data->ptr);
+			if (data->coor[i + 1])
+				ft_draw_line(data->coor[i]->cam, data->coor[i + 1]->cam, 0x00FFFFFF, &data->ptr);
+			data->coor[i] = data->coor[i]->next;
+		}
+		i++;
+	}
+	mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
 }
 
 
@@ -85,10 +109,19 @@ int	main(int argc, char **argv)
 
 	// size_t i = 0;
 	// printf("%d\n", ft_atoi_base(ft_word("FFFFFFFF"), "0123456789ABCDEF"));
-	ft_draw_all(data);
+	// ft_draw_all(&data);
 	// printf("%p\n", data.ptr.img);
 	// mlx_key_hook ( data.ptr., int (*funct_ptr)(), void *param );
 	
+	t_cam cam;
+	t_cam cam1;
+
+	cam1.x = 500;
+	cam1.y = 300;
+	cam.x = 0;
+	cam.y = 400;
+	ft_draw_line(cam, cam1, 0x00FFFFFF, &data.ptr); 
+	mlx_put_image_to_window(data.ptr.mlx, data.ptr.win, data.ptr.img, 0, 0);
 
 	// mlx_pixel_put(data.ptr.mlx, data.ptr.win, 500, 500, 0X00FF00FF);
 	// mlx_hook(data.ptr.win, 2, 0L, ft_hook, &(data));
