@@ -13,7 +13,9 @@ t_coor	*ft_coornew(t_model model, int color)
 	// ft_rotx(&coor->model, ft_rad(90));
 	// printf("%ld %ld %ld\n", coor->model.x, coor->model.y, coor->model.z);
 	
-	coor->cam = ft_project(coor->model, ft_rad(45));
+	coor->cam = ft_project(coor->model, ft_rad(30));
+	if (color == 0)
+		color = 16777215;
 	coor->color = color;
 	coor->prev = 0;
 	coor->next = 0;
@@ -57,5 +59,15 @@ void	ft_coorclear(t_coor **coor)
 		*coor = (*coor)->next;
 		free(tmp);
 	}
+}
+
+t_coor	*ft_coorfirst(t_coor *coor)
+{
+	t_coor *tmp;
+
+	tmp = coor;
+	while (tmp->prev)
+		tmp = tmp->prev;
+	return (tmp);
 }
 

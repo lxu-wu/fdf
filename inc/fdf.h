@@ -67,4 +67,6 @@ void	ft_rotx(t_model *model, float rad);
 void	ft_rotz(t_model *model, float rad);
 void	ft_roty(t_model *model, float rad);
 
+t_coor	*ft_coorfirst(t_coor *coor);
+
 #endif

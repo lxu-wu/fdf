@@ -4,8 +4,8 @@ t_cam	ft_project(t_model model, float rad)
 {
 	t_cam	cam;
 
-	cam.x = (model.x - model.y) * cos(rad) * 100 + 500;
-	cam.y = ((model.x + model.y) * sin(rad) - model.z) * 100 + 200;
+	cam.x = ((float)(model.x - model.y) * 50) * cos(rad) + 500;
+	cam.y = ((float)((model.x + model.y) * 50) * sin(rad) - (model.z * 20)) + 200;
 	return (cam);
 }
 

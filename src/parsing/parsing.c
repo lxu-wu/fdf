@@ -44,19 +44,26 @@ int	ft_check_str(char c, char *base)
 		i++;
 	if (c == base[i])
 		return (i);
+	printf("%c\n", c);
 	ft_error(5);
 	return (1);
 }	
 
 int	ft_atoi_base(char *str, char *base)
 {
-	int	n;
-	int	neg;
-	int	base_len;
+	int		n;
+	int		neg;
+	int		base_len;
+	char	*tmp;
 
+	tmp = str;
+	// printf("%s\n", str);
+	if (str[0] != '0' || str[1] != 'X')
+		ft_error(4);
+	str += 2;
 	base_len = ft_strlen(base);
 	n = 0;
-	while (ft_check_str(*str, base) >= 0)
+	while (*str && ft_check_str(*str, base) >= 0)
 	{
 		n = n * base_len + ft_check_str(*str, base);
 		str++;
@@ -87,7 +94,7 @@ t_coor	*ft_modelize(char *line, size_t y)
 		{
 			if (line[i] == ',' && ++i)
 			{
-				color = ft_atoi_base(ft_strupper(ft_word(line)), "0123456789ABCDEF");
+				color = ft_atoi_base(ft_strupper(ft_word(line + i)), "0123456789ABCDEF");
 				while (line[i] && line[i] != ' ')
 					i++;
 			}
