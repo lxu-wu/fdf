@@ -27,8 +27,8 @@ typedef	struct s_model
 
 typedef	struct s_cam
 {
-	long	x;
-	long	y;
+	double	x;
+	double	y;
 }	t_cam;
 
 typedef struct s_coor
@@ -44,9 +44,10 @@ typedef struct t_data
 {
 	t_ptr	ptr;
 	t_coor	**coor;
+	t_list	*saved;
 }	t_data;
 
-void	ft_put_pixel(t_ptr *ptr, long x, long y, int color);
+void	ft_put_pixel(t_ptr *ptr, double x, double y, int color);
 int		ft_exit(t_data *data);
 void	ft_error(int e);
 
@@ -68,5 +69,5 @@ void	ft_rotz(t_model *model, float rad);
 void	ft_roty(t_model *model, float rad);
 
 t_coor	*ft_coorfirst(t_coor *coor);
-
+t_list	*ft_saved(t_data *data);
 #endif
