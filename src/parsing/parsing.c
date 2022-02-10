@@ -68,6 +68,7 @@ int	ft_atoi_base(char *str, char *base)
 		n = n * base_len + ft_check_str(*str, base);
 		str++;
 	}
+	free(tmp);
 	return (n);
 }
 
@@ -84,7 +85,7 @@ t_coor	*ft_modelize(char *line, size_t y)
 	coor = 0;
 	while (line[i])
 	{
-		color = 0;
+		color = 0x00FFFFFF;
 		model.y = y;
 		model.x = x;
 		while (line[i] && ft_isspace(line[i]))
@@ -139,7 +140,6 @@ t_coor	**ft_parsing(char *map)
 	fd = open(map, O_RDONLY);
 	if (fd == -1)
 	{
-
 		perror("open :");
 		exit(1);
 	}

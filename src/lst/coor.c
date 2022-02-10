@@ -7,15 +7,8 @@ t_coor	*ft_coornew(t_model model, int color)
 	coor = malloc(sizeof(t_coor));
 	if (!coor)
 		return (0);
-	coor->model = model;
-	
-	// printf("%ld %ld %ld\n", model.x, model.y, model.z);
-	// ft_rotx(&coor->model, ft_rad(90));
-	// printf("%ld %ld %ld\n", coor->model.x, coor->model.y, coor->model.z);
-	
+	coor->model = model;	
 	coor->cam = ft_project(coor->model, ft_rad(30));
-	if (color == 0)
-		color = 16777215;
 	coor->color = color;
 	coor->prev = 0;
 	coor->next = 0;
