@@ -162,6 +162,11 @@ void	ft_vertic(t_data *data, int key)
 	}
 }
 
+// void ft_rot(t_data *data, int key)
+// {
+	
+// }
+
 int	ft_hook(int key, t_data *data)
 {
 	char	*buffer;
@@ -194,6 +199,15 @@ int	ft_hook(int key, t_data *data)
 	{
 		ft_data_reset(data);
 		ft_vertic(data, key);
+		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
+		buffer = ft_memset(buffer, 0, size_len * WIDTH);
+		ft_data_reset(data);
+		ft_draw_all_line(data);
+	}
+	else if (key == 4)
+	{
+		ft_data_reset(data);
+		ft_rot(data, key);
 		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
 		buffer = ft_memset(buffer, 0, size_len * WIDTH);
 		ft_data_reset(data);
@@ -263,6 +277,77 @@ void	ft_draw_all(t_data data)
 	mlx_put_image_to_window(data.ptr.mlx, data.ptr.win, data.ptr.img, 0, 0);
 }
 
+
+size_t	ft_coor_len(t_data *data)
+{
+	size_t	len;
+	size_t	tmp;
+	size_t	i;
+
+	i = 0;
+	len = 0;
+	while (data->coor[i])
+	{
+		tmp = ft_coorsize(data->coor[i++]);
+		if (len < tmp)
+			len = tmp;
+	}
+	return (len);
+}
+
+size_t	ft_coor_height(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (data->coor[i])
+		i++;
+	return (i);
+}
+
+
+void	ft_resize_model(t_data *data)
+{
+	size_t	i;
+	size_t	dy;
+	size_t	dx;
+
+	dy = data->height / 2;
+	dx = data->len / 2;
+
+	i = 0;
+	while (data->coor[i])
+	{
+		while (data->coor[i])
+		{
+			data->coor[i]->model.x -= dx;
+			data->coor[i]->model.y -= dy;
+			data->coor[i] = data->coor[i]->next;
+		}
+		i++;
+	}
+	// becontinue
+}
+
+void	ft_cameralize(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (data->coor[i])
+	{
+		while (data->coor[i])
+		{
+			data->coor[i]->cam = ft_project(data->coor[i]->model, ft_rad(30));
+			data->coor[i] = data->coor[i]->next;
+		}
+		i++;
+	}
+	ft_data_reset(data);
+}
+
+
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
@@ -272,14 +357,28 @@ int	main(int argc, char **argv)
 	// printf("1\n");
 	data.ptr = ft_init_ptr();
 	data.saved = ft_saved(&data);
+	ft_data_reset(&data);
 
+
+
+	data.len = ft_coor_len(&data);
+	ft_data_reset(&data);
+
+
+	data.height = ft_coor_height(&data);
+	ft_data_reset(&data);
+
+	ft_resize_model(&data);
+	ft_data_reset(&data);
+	
+	ft_cameralize(&data);
 	// size_t i = 0;
-
 	// printf("%d\n", ft_atoi_base(ft_word("FFFFFFFF"), "0123456789ABCDEF"));
+	ft_draw_all(data);
+	ft_data_reset(&data);
 	ft_draw_all_line(&data);
 	ft_data_reset(&data);
 	// ft_printcoor(data.coor);
-	// ft_draw_all(data);
 	// printf("%p\n", data.ptr.img);
 	// mlx_key_hook ( data.ptr., int (*funct_ptr)(), void *param );
 	

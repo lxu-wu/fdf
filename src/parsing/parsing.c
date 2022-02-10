@@ -6,7 +6,37 @@
 
 
 
+// size_t	ft_coor_len(t_data *data)
+// {
+// 	size_t	len;
+// 	size_t	tmp;
+// 	size_t	i;
 
+// 	i = 0;
+// 	len = 0;
+// 	while (data->coor[i])
+// 	{
+// 		tmp = ft_coorsize(data->coor[i++]);
+// 		if (len < tmp)
+// 			len = tmp;
+// 	}
+// 	return (len);
+// }
+
+// size_t	ft_coor_height(t_data *data)
+// {
+// 	size_t	i;
+
+// 	i = 0;
+// 	while (data->coor[i])
+// 		i++;
+// 	return (i);
+// }
+	// ft_data_reset(data);
+	// data->len = ft_coor_len(data);
+	// ft_data_reset(data);
+	// data->height = ft_coor_height(data);
+	// ft_data_reset(data);
 
 
 
@@ -85,25 +115,28 @@ t_coor	*ft_modelize(char *line, size_t y)
 	coor = 0;
 	while (line[i])
 	{
-		color = 0x00FFFFFF;
-		model.y = y;
-		model.x = x;
 		while (line[i] && ft_isspace(line[i]))
 			i++;
-		model.z = ft_atoi(line + i);
-		while (line[i] && line[i] != ' ')
+		if (line[i])
 		{
-			if (line[i] == ',' && ++i)
+			color = 0x00FFFFFF;
+			model.y = y;
+			model.x = x;
+			model.z = ft_atoi(line + i);
+			while (line[i] && line[i] != ' ')
 			{
-				color = ft_atoi_base(ft_strupper(ft_word(line + i)), "0123456789ABCDEF");
-				while (line[i] && line[i] != ' ')
+				if (line[i] == ',' && ++i)
+				{
+					color = ft_atoi_base(ft_strupper(ft_word(line + i)), "0123456789ABCDEF");
+					while (line[i] && line[i] != ' ')
+						i++;
+				}
+				else
 					i++;
 			}
-			else
-				i++;
+			x++;
+			ft_cooradd_back(&coor, ft_coornew(model, color));
 		}
-		x++;
-		ft_cooradd_back(&coor, ft_coornew(model, color));
 	}
 	return (coor);
 }
@@ -127,6 +160,61 @@ t_coor **ft_get_coor(t_list *lstmap)
 	return (coor);
 }
 
+int	ft_check_line(char *line)
+{
+	size_t	i;
+	int		e;
+
+	i = 0;
+	e = 0;
+	while (line[i])
+	{
+		if (ft_isspace(line[i]))
+			i++;
+		else if (ft_isdigit(line[i]))
+		{
+			e = 1;
+			while (ft_isdigit(line[i]))
+			{
+				if (line[i] && line[i + 1] && line[i + 2] && line[i] == ',' && line[i + 1] == '0' && (line[i + 2] == 'x' || (line[i + 2] == 'X')))
+					i += 3;
+				i++;
+			}
+		}
+		else if (!ft_isdigit(line[i]) && !ft_isspace(line[i]))
+			return (-1);
+		else
+			i++;
+	}
+	if (!e)
+		return (1);
+	return (0);
+}
+
+t_list	*ft_get_lstmap(int fd)
+{
+	char	*line;
+	int		e;
+	t_list	*lstmap;
+
+	lstmap = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		e = ft_check_line(line);
+		if (e == 0)
+			ft_lstadd_back(&lstmap, ft_lstnew(line));
+		if (e == -1)
+		{
+			ft_lstclear(&lstmap, free);
+			write(2, "Map error: content false\n", 25);
+			exit(1);
+		}
+		line = get_next_line(fd);
+	}
+	return (lstmap);
+}
+
 t_coor	**ft_parsing(char *map)
 {
 	t_coor	**coor;
@@ -143,12 +231,7 @@ t_coor	**ft_parsing(char *map)
 		perror("open :");
 		exit(1);
 	}
-	line = get_next_line(fd);
-	while (line)
-	{
-		ft_lstadd_back(&lstmap, ft_lstnew(line));
-		line = get_next_line(fd);
-	}
+	lstmap = ft_get_lstmap(fd);
 	coor = ft_get_coor(lstmap);
 	return (coor);
 }

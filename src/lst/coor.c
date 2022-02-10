@@ -8,7 +8,7 @@ t_coor	*ft_coornew(t_model model, int color)
 	if (!coor)
 		return (0);
 	coor->model = model;	
-	coor->cam = ft_project(coor->model, ft_rad(30));
+	// coor->cam = ft_project(coor->model, ft_rad(30));
 	coor->color = color;
 	coor->prev = 0;
 	coor->next = 0;
@@ -23,6 +23,24 @@ t_coor	*ft_coorlast(t_coor *coor)
 	while (tmp->next)
 		tmp = tmp->next;
 	return (tmp);
+}
+
+
+size_t	ft_coorsize(t_coor *coor)
+{
+	int		i;
+	t_coor	*current;
+
+	if (!coor)
+		return (0);
+	i = 1;
+	current = coor;
+	while (current->next != NULL)
+	{
+		i++;
+		current = current->next;
+	}
+	return (i);
 }
 
 void	ft_cooradd_back(t_coor **acoor, t_coor *new)

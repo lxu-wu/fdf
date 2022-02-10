@@ -20,9 +20,9 @@ typedef struct s_ptr
 
 typedef	struct s_model
 {
-	long	x;
-	long	y;
-	long	z;
+	double	x;
+	double	y;
+	double	z;
 }	t_model;
 
 typedef	struct s_cam
@@ -45,6 +45,8 @@ typedef struct t_data
 	t_ptr	ptr;
 	t_coor	**coor;
 	t_list	*saved;
+	size_t	len;
+	size_t	height;
 }	t_data;
 
 void	ft_put_pixel(t_ptr *ptr, double x, double y, int color);
@@ -70,4 +72,6 @@ void	ft_roty(t_model *model, float rad);
 
 t_coor	*ft_coorfirst(t_coor *coor);
 t_list	*ft_saved(t_data *data);
+void	ft_data_reset(t_data *data);
+size_t	ft_coorsize(t_coor *coor);
 #endif
