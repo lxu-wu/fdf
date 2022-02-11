@@ -167,10 +167,16 @@ int	ft_check_line(char *line)
 
 	i = 0;
 	e = 0;
+	if (line[0] == '-')
+		i++;
 	while (line[i])
 	{
 		if (ft_isspace(line[i]))
+		{
 			i++;
+			if (line[i] && line[i] == '-')
+				i++;
+		}
 		else if (ft_isdigit(line[i]))
 		{
 			e = 1;
@@ -182,7 +188,10 @@ int	ft_check_line(char *line)
 			}
 		}
 		else if (!ft_isdigit(line[i]) && !ft_isspace(line[i]))
+		{
+			printf("%i\n", line[i]);
 			return (-1);
+		}
 		else
 			i++;
 	}
@@ -232,6 +241,7 @@ t_coor	**ft_parsing(char *map)
 		exit(1);
 	}
 	lstmap = ft_get_lstmap(fd);
+	close(fd);
 	coor = ft_get_coor(lstmap);
 	return (coor);
 }

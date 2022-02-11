@@ -4,30 +4,48 @@ t_cam	ft_project(t_model model, float rad)
 {
 	t_cam	cam;
 
-	cam.x = ((model.x - model.y) * 50) * cos(rad) + 500;
-	cam.y = (((model.x + model.y) * 50) * sin(rad) - (model.z * 20)) + 200;
+	// ft_rotx(&model, ft_rad(90));
+	// ft_rotz(&model, ft_rad(90));
+	// ft_roty(&model, ft_rad(90));
+	cam.x = ((model.x - model.y)) * cos(rad) + 500;
+	cam.y = (((model.x + model.y)) * sin(rad) - (model.z)) + 200;
 	return (cam);
 }
 
 void	ft_rotx(t_model *model, float rad)
 {
-	model->x = round((model->x * 1) + (model->x * 0) + (model->x * 0));
-	model->z = round((model->z * 0) + (model->z * cos(rad)) + (model->z * -sin(rad)));
-	model->y = round((model->y * 0) + (model->y * sin(rad)) + (model->y * cos(rad)));
+	t_model	new;
+	
+	new.x = model->x;
+	new.z = model->z;
+	new.y = model->y;
+	model->x = (new.x * 1) + (new.z * 0) + (new.y * 0);
+	model->z = (new.x * 0) + (new.z * cos(rad)) + (new.y * -sin(rad));
+	model->y = (new.x * 0) + (new.z * sin(rad)) + (new.y * cos(rad));
 }
 
 void	ft_rotz(t_model *model, float rad)
 {
-	model->x = round((model->x * cos(rad)) + (model->x * 0) + (model->x * sin(rad)));
-	model->z = (model->z * 0) + (model->z * 1) + (model->z * 0);
-	model->y = round((model->y * -sin(rad)) + (model->y * 0) + (model->y * cos(rad)));
+	t_model	new;
+
+	new.x = model->x;
+	new.z = model->z;
+	new.y = model->y;
+	model->x = (new.x * cos(rad)) + (new.z * 0) + (new.y * sin(rad));
+	model->z = (new.x * 0) + (new.z * 1) + (new.y * 0);
+	model->y = (new.x * -sin(rad)) + (new.z * 0) + (new.y * cos(rad));
 }
 
 void	ft_roty(t_model *model, float rad)
 {
-	model->x = round((model->x * cos(rad)) + (model->x * -sin(rad)) + (model->x * 0));
-	model->z = round((model->z * sin(rad)) + (model->z * cos(rad)) + (model->z * 0));
-	model->y = round((model->y * 0) + (model->y * 0) + (model->y * 1));
+	t_model	new;
+
+	new.x = model->x;
+	new.z = model->z;
+	new.y = model->y;
+	model->x = (new.x * cos(rad)) + (new.z * -sin(rad)) + (new.y * 0);
+	model->z = (new.x * sin(rad)) + (new.z * cos(rad)) + (new.y * 0);
+	model->y = (new.x * 0) + (new.z * 0) + (new.y * 1);
 }
 
 // x = 	1 0 		0

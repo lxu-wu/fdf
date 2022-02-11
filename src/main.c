@@ -1,5 +1,6 @@
 #include "../inc/fdf.h"
 
+void	ft_cameralize(t_data *data);
 void	ft_printcoor(t_coor **coor)
 {
 	size_t	i;
@@ -46,7 +47,8 @@ void	ft_translation(t_data *data, int key)
 		{
 			while (data->coor[i])
 			{
-				data->coor[i]->cam.x -= 1;
+				data->coor[i]->model.x -= 1;
+				data->coor[i]->model.y += 1;
 				data->coor[i] = data->coor[i]->next;
 			}
 			i++;
@@ -58,7 +60,8 @@ void	ft_translation(t_data *data, int key)
 		{
 			while (data->coor[i])
 			{
-				data->coor[i]->cam.x += 1;
+				data->coor[i]->model.x += 1;
+				data->coor[i]->model.y -= 1;
 				data->coor[i] = data->coor[i]->next;
 			}
 			i++;
@@ -70,7 +73,8 @@ void	ft_translation(t_data *data, int key)
 		{
 			while (data->coor[i])
 			{
-				data->coor[i]->cam.y += 1;
+				data->coor[i]->model.x += 1;
+				data->coor[i]->model.y += 1;
 				data->coor[i] = data->coor[i]->next;
 			}
 			i++;
@@ -82,7 +86,8 @@ void	ft_translation(t_data *data, int key)
 		{
 			while (data->coor[i])
 			{
-				data->coor[i]->cam.y -= 1;
+				data->coor[i]->model.x -= 1;
+				data->coor[i]->model.y -= 1;
 				data->coor[i] = data->coor[i]->next;
 			}
 			i++;
@@ -101,8 +106,9 @@ void	ft_zoom(t_data *data, int key)
 		{
 			while (data->coor[i])
 			{
-				data->coor[i]->cam.x *= 1.01;
-				data->coor[i]->cam.y *= 1.01;
+				data->coor[i]->model.x *= 1.01;
+				data->coor[i]->model.y *= 1.01;
+				data->coor[i]->model.z *= 1.01;
 				data->coor[i] = data->coor[i]->next;
 			}
 			i++;
@@ -115,8 +121,9 @@ void	ft_zoom(t_data *data, int key)
 		{
 			while (data->coor[i])
 			{
-				data->coor[i]->cam.x /= 1.01;
-				data->coor[i]->cam.y /= 1.01;
+				data->coor[i]->model.x /= 1.01;
+				data->coor[i]->model.y /= 1.01;
+				data->coor[i]->model.z /= 1.01;
 				// printf("%f,", data->coor[i]->cam.x);
 				// printf("%f\n", data->coor[i]->cam.y);
 				data->coor[i] = data->coor[i]->next;
@@ -138,7 +145,8 @@ void	ft_vertic(t_data *data, int key)
 		{
 			while (data->coor[i])
 			{
-				data->coor[i]->cam.y += 1;
+				if (data->coor[i]->model.z)
+					data->coor[i]->model.z /= 1.2;
 				data->coor[i] = data->coor[i]->next;
 			}
 			i++;
@@ -151,7 +159,8 @@ void	ft_vertic(t_data *data, int key)
 		{
 			while (data->coor[i])
 			{
-				data->coor[i]->cam.y -= 1;
+				if (data->coor[i]->model.z)
+					data->coor[i]->model.z *= 1.2;
 				// printf("%f,", data->coor[i]->cam.x);
 				// printf("%f\n", data->coor[i]->cam.y);
 				data->coor[i] = data->coor[i]->next;
@@ -162,10 +171,39 @@ void	ft_vertic(t_data *data, int key)
 	}
 }
 
-// void ft_rot(t_data *data, int key)
-// {
-	
-// }
+void ft_rot(t_data *data, int key)
+{
+	size_t	i;
+
+	i = 0;
+	if (key == 5)
+	{
+		while (data->coor[i])
+		{
+			while (data->coor[i])
+			{
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				ft_rotz(&data->coor[i]->model, ft_rad(1));
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				data->coor[i] = data->coor[i]->next;
+			}
+			i++;
+		}
+	}
+	if (key == 4)
+	{
+		while (data->coor[i])
+		{
+			while (data->coor[i])
+			{
+				ft_rotz(&data->coor[i]->model, ft_rad(-1));
+				data->coor[i] = data->coor[i]->next;
+			}
+			i++;
+		}
+	}
+}
+
 
 int	ft_hook(int key, t_data *data)
 {
@@ -184,6 +222,7 @@ int	ft_hook(int key, t_data *data)
 		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
 		buffer = ft_memset(buffer, 0, size_len * WIDTH);
 		ft_data_reset(data);
+		ft_cameralize(data);
 		ft_draw_all_line(data);
 	}
 	else if (key == 12 || key == 14)
@@ -193,6 +232,7 @@ int	ft_hook(int key, t_data *data)
 		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
 		buffer = ft_memset(buffer, 0, size_len * WIDTH);
 		ft_data_reset(data);
+		ft_cameralize(data);
 		ft_draw_all_line(data);
 	}
 	else if (key == 15 || key == 3)
@@ -202,15 +242,17 @@ int	ft_hook(int key, t_data *data)
 		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
 		buffer = ft_memset(buffer, 0, size_len * WIDTH);
 		ft_data_reset(data);
+		ft_cameralize(data);
 		ft_draw_all_line(data);
 	}
-	else if (key == 4)
+	else if (key == 5 || key == 4)
 	{
 		ft_data_reset(data);
 		ft_rot(data, key);
 		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
 		buffer = ft_memset(buffer, 0, size_len * WIDTH);
 		ft_data_reset(data);
+		ft_cameralize(data);
 		ft_draw_all_line(data);
 	}
 	// ft_put_pixel(&data->ptr, x, y, 0x0000FF00);
@@ -321,7 +363,9 @@ void	ft_resize_model(t_data *data)
 		while (data->coor[i])
 		{
 			data->coor[i]->model.x -= dx;
+			data->coor[i]->model.x *= 100;
 			data->coor[i]->model.y -= dy;
+			data->coor[i]->model.y *= 100;
 			data->coor[i] = data->coor[i]->next;
 		}
 		i++;
