@@ -1,14 +1,26 @@
 #include "../../inc/fdf.h"
 
-t_cam	ft_project(t_model model, float rad)
+t_cam	ft_project(t_model model, t_tra transfo, float rad, int mod)
 {
+	static int		e;
 	t_cam	cam;
 
+	if (!e)
+		e = 1;
+	e *= mod;
 	// ft_rotx(&model, ft_rad(90));
 	// ft_rotz(&model, ft_rad(90));
 	// ft_roty(&model, ft_rad(90));
-	cam.x = ((model.x - model.y)) * cos(rad) + 500;
-	cam.y = (((model.x + model.y)) * sin(rad) - (model.z)) + 200;
+	if (e == 1)
+	{
+		cam.x = ((model.x - model.y) * cos(rad)); 
+		cam.y = ((model.x + model.y) * sin(rad) - (model.z));
+	}
+	// else if (e == -1)
+	// {
+	// 	cam.x = model.x;
+	// 	cam.y = model.y;
+	// }
 	return (cam);
 }
 

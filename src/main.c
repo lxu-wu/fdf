@@ -273,7 +273,7 @@ t_ptr	ft_init_ptr(void)
 	t_ptr	ptr;
 
 	ptr.mlx = mlx_init();
-	ptr.win = mlx_new_window(ptr.mlx, WIDTH, HEIGHT, "TEST");
+	ptr.win = mlx_new_window(ptr.mlx, WIDTH, HEIGHT, "FDF");
 	ptr.img = mlx_new_image(ptr.mlx, WIDTH, HEIGHT);
 	return (ptr);
 }
@@ -300,23 +300,22 @@ void	ft_draw_all_line(t_data *data)
 	mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
 }
 
-void	ft_draw_all(t_data data)
+void	ft_draw_all(t_data *data)
 {
 	size_t	i;
-	t_data tmp;
-	tmp = data;
 
 	i = 0;
-	while (tmp.coor[i])
+	while (data->coor[i])
 	{
-		while (tmp.coor[i])
+		while (data->coor[i])
 		{
-			ft_put_pixel(&tmp.ptr, tmp.coor[i]->cam.x, tmp.coor[i]->cam.y, 0x00FF00FF);
-			(tmp.coor)[i] = (tmp.coor)[i]->next;
+			ft_put_pixel(&data->ptr, data->coor[i]->cam.x, data->coor[i]->cam.y, data->coor[i]->color);
+			printf("%f ", data->coor[i]->cam.x);
+			(data->coor)[i] = (data->coor)[i]->next;
 		}
 		i++;
 	}
-	mlx_put_image_to_window(data.ptr.mlx, data.ptr.win, data.ptr.img, 0, 0);
+	mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
 }
 
 
@@ -363,9 +362,9 @@ void	ft_resize_model(t_data *data)
 		while (data->coor[i])
 		{
 			data->coor[i]->model.x -= dx;
-			data->coor[i]->model.x *= 100;
+			data->coor[i]->model.x *= HEIGHT / data->len;
 			data->coor[i]->model.y -= dy;
-			data->coor[i]->model.y *= 100;
+			data->coor[i]->model.y *= HEIGHT / data->len;
 			data->coor[i] = data->coor[i]->next;
 		}
 		i++;
@@ -382,7 +381,22 @@ void	ft_cameralize(t_data *data)
 	{
 		while (data->coor[i])
 		{
-			data->coor[i]->cam = ft_project(data->coor[i]->model, ft_rad(30));
+			data->coor[i]->pro.x = data->coor[i]->model.x * data->transfo.zoom;
+			data->coor[i]->pro.z = data->coor[i]->model.z * data->transfo.zoom;
+			data->coor[i]->pro.y = data->coor[i]->model.y * data->transfo.zoom;
+			data->coor[i] = data->coor[i]->next;
+		}
+		i++;
+	}
+	ft_data_reset(data);
+	i = 0;
+	while (data->coor[i])
+	{
+		while (data->coor[i])
+		{
+			data->coor[i]->cam = ft_project(data->coor[i]->pro, data->transfo, ft_rad(30), 1);
+			data->coor[i]->cam.x += data->transfo.x;
+			data->coor[i]->cam.y += data->transfo.y;
 			data->coor[i] = data->coor[i]->next;
 		}
 		i++;
@@ -390,7 +404,15 @@ void	ft_cameralize(t_data *data)
 	ft_data_reset(data);
 }
 
-
+void	ft_ttra(t_data *data)
+{
+	data->transfo.rx = 0;
+	data->transfo.rz = 0;
+	data->transfo.ry = 0;
+	data->transfo.x = WIDTH / 2;
+	data->transfo.y = HEIGHT / 2;
+	data->transfo.zoom = 1;
+}
 
 int	main(int argc, char **argv)
 {
@@ -412,16 +434,19 @@ int	main(int argc, char **argv)
 	data.height = ft_coor_height(&data);
 	ft_data_reset(&data);
 
+	ft_ttra(&data);
+
 	ft_resize_model(&data);
 	ft_data_reset(&data);
+
 	
 	ft_cameralize(&data);
 	// size_t i = 0;
 	// printf("%d\n", ft_atoi_base(ft_word("FFFFFFFF"), "0123456789ABCDEF"));
-	ft_draw_all(data);
-	ft_data_reset(&data);
-	ft_draw_all_line(&data);
-	ft_data_reset(&data);
+	ft_draw_all(&data);
+	// ft_data_reset(&data);
+	// ft_draw_all_line(&data);
+	// ft_data_reset(&data);
 	// ft_printcoor(data.coor);
 	// printf("%p\n", data.ptr.img);
 	// mlx_key_hook ( data.ptr., int (*funct_ptr)(), void *param );
@@ -437,9 +462,9 @@ int	main(int argc, char **argv)
 	// mlx_put_image_to_window(data.ptr.mlx, data.ptr.win, data.ptr.img, 0, 0);
 	// mlx_put_image_to_window(data.ptr.mlx, data.ptr.win, data.ptr.img, 0, 0);
 	// mlx_pixel_put(data.ptr.mlx, data.ptr.win, 500, 500, 0X00FF00FF);
-	mlx_hook(data.ptr.win, 2, 0L, ft_hook, &(data));
-	mlx_hook(data.ptr.win, 17, 0L, ft_exit, &(data));
 
+	// mlx_hook(data.ptr.win, 2, 0L, ft_hook, &(data));
+	// mlx_hook(data.ptr.win, 17, 0L, ft_exit, &(data));
 	// ft_printcoor(data.coor);
 	mlx_loop(data.ptr.mlx);
 

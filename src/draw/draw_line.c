@@ -1,6 +1,6 @@
 #include "../../inc/fdf.h"
 
-void	ft_put_pixel(t_ptr *ptr, double x, double y, int color)//, t_camcoor c1, t_camcoor c2)
+void	ft_put_pixel(t_ptr *ptr, long x, long y, int color)//, t_camcoor c1, t_camcoor c2)
 {
 	int 	pixel_bits;
 	int 	size_line;
@@ -13,7 +13,7 @@ void	ft_put_pixel(t_ptr *ptr, double x, double y, int color)//, t_camcoor c1, t_
 	{
 		buffer = mlx_get_data_addr(ptr->img, &pixel_bits, &size_line, &endian);
 		pixel = round((y *  size_line) + (x * 4));
-		buffer[pixel + 0] = color;
+		buffer[pixel] = color;
 		buffer[pixel + 1] = (color >> 8);
 		buffer[pixel + 2] = (color >> 16);
 		buffer[pixel + 3] = (color >> 24);
@@ -56,7 +56,7 @@ void	ft_draw_line(t_cam c1, t_cam c2, int color, t_ptr *ptr)
 			}
 		}
 	}
-	if (Dx < Dy)
+	if (Dx <= Dy)
 	{
 		while (i < Dy)
 		{

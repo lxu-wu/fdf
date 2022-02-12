@@ -35,21 +35,33 @@ typedef struct s_coor
 {
 	t_model			model;
 	t_cam			cam;
+	t_model			pro;
 	int				color;
 	struct s_coor	*prev;
 	struct s_coor	*next;
 }	t_coor;
+
+typedef struct s_tra
+{
+	double	rx;
+	double	rz;
+	double	ry;
+	double	zoom;
+	size_t	x;
+	size_t	y;
+}	t_tra;
 
 typedef struct t_data
 {
 	t_ptr	ptr;
 	t_coor	**coor;
 	t_list	*saved;
+	t_tra	transfo;
 	size_t	len;
 	size_t	height;
 }	t_data;
 
-void	ft_put_pixel(t_ptr *ptr, double x, double y, int color);
+void	ft_put_pixel(t_ptr *ptr, long x, long y, int color);
 int		ft_exit(t_data *data);
 void	ft_error(int e);
 
@@ -58,8 +70,7 @@ t_coor	*ft_coorlast(t_coor *coor);
 void	ft_cooradd_back(t_coor **acoor, t_coor *new);
 void	ft_coorclear(t_coor **coor);
 
-t_cam	ft_project(t_model model, float rad);
-
+t_cam	ft_project(t_model model, t_tra transfo, float rad, int mod);
 float	ft_rad(float degree);
 t_coor	**ft_parsing(char *map);
 char	*ft_word(char *str);

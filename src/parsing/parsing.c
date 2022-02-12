@@ -182,9 +182,13 @@ int	ft_check_line(char *line)
 			e = 1;
 			while (ft_isdigit(line[i]))
 			{
-				if (line[i] && line[i + 1] && line[i + 2] && line[i] == ',' && line[i + 1] == '0' && (line[i + 2] == 'x' || (line[i + 2] == 'X')))
-					i += 3;
 				i++;
+				if (line[i] && line[i + 1] && line[i + 2] && line[i] == ',' && line[i + 1] == '0' && (line[i + 2] == 'x' || (line[i + 2] == 'X')))
+				{
+					i += 3;
+					while (line[i] && !ft_isspace(line[i]))
+						i++;
+				}
 			}
 		}
 		else if (!ft_isdigit(line[i]) && !ft_isspace(line[i]))
