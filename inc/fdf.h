@@ -8,8 +8,8 @@
 
 #include <stdio.h>
 
-# define WIDTH 1000
-# define HEIGHT 800
+# define WIDTH 300
+# define HEIGHT 20
 
 typedef struct s_ptr
 {
@@ -43,9 +43,6 @@ typedef struct s_coor
 
 typedef struct s_tra
 {
-	double	rx;
-	double	rz;
-	double	ry;
 	double	zoom;
 	size_t	x;
 	size_t	y;
@@ -70,7 +67,7 @@ t_coor	*ft_coorlast(t_coor *coor);
 void	ft_cooradd_back(t_coor **acoor, t_coor *new);
 void	ft_coorclear(t_coor **coor);
 
-t_cam	ft_project(t_model model, t_tra transfo, float rad, int mod);
+t_cam	ft_project(t_model model, int mod);
 float	ft_rad(float degree);
 t_coor	**ft_parsing(char *map);
 char	*ft_word(char *str);
@@ -85,4 +82,9 @@ t_coor	*ft_coorfirst(t_coor *coor);
 t_list	*ft_saved(t_data *data);
 void	ft_data_reset(t_data *data);
 size_t	ft_coorsize(t_coor *coor);
+
+void	ft_draw_bg(t_ptr *ptr, int color);
+void	ft_iso(t_data *data);
+void	ft_data_reset(t_data *data);
+void	ft_ttra(t_data *data);
 #endif

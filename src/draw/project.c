@@ -1,6 +1,24 @@
 #include "../../inc/fdf.h"
 
-t_cam	ft_project(t_model model, t_tra transfo, float rad, int mod)
+void	ft_iso(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (data->coor[i])
+	{
+		while (data->coor[i])
+		{
+			ft_rotz(&data->coor[i]->pro, ft_rad(-45));
+			ft_rotx(&data->coor[i]->pro, ft_rad(30));
+			data->coor[i] = data->coor[i]->next;
+		}
+		i++;
+	}
+	ft_data_reset(data);
+}
+
+t_cam	ft_project(t_model model, int mod)
 {
 	static int		e;
 	t_cam	cam;
@@ -8,19 +26,22 @@ t_cam	ft_project(t_model model, t_tra transfo, float rad, int mod)
 	if (!e)
 		e = 1;
 	e *= mod;
-	// ft_rotx(&model, ft_rad(90));
-	// ft_rotz(&model, ft_rad(90));
+	// if (e == 1)
+	// {
+		// ft_rotz(model, ft_rad(-45));
+		// ft_rotx(model, ft_rad(30));
+	// }
 	// ft_roty(&model, ft_rad(90));
 	if (e == 1)
 	{
-		cam.x = ((model.x - model.y) * cos(rad)); 
-		cam.y = ((model.x + model.y) * sin(rad) - (model.z));
+		cam.x = model.x;
+		cam.y = -model.z;
 	}
-	// else if (e == -1)
-	// {
-	// 	cam.x = model.x;
-	// 	cam.y = model.y;
-	// }
+	else if (e == -1)
+	{
+		cam.x = model.x; 
+		cam.y = model.y;
+	}
 	return (cam);
 }
 

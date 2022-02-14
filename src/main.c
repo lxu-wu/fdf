@@ -201,7 +201,7 @@ void ft_rot(t_data *data, int key)
 			i++;
 		}
 	}
-	if (key == 4)
+	else if (key == 4)
 	{
 		while (data->coor[i])
 		{
@@ -213,15 +213,70 @@ void ft_rot(t_data *data, int key)
 			i++;
 		}
 	}
+	else if (key == 17)
+	{
+		while (data->coor[i])
+		{
+			while (data->coor[i])
+			{
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				ft_rotx(&data->coor[i]->pro, ft_rad(1));
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				data->coor[i] = data->coor[i]->next;
+			}
+			i++;
+		}
+	}
+	else if (key == 16)
+	{
+		while (data->coor[i])
+		{
+			while (data->coor[i])
+			{
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				ft_rotx(&data->coor[i]->pro, ft_rad(-1));
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				data->coor[i] = data->coor[i]->next;
+			}
+			i++;
+		}
+	}
+	else if (key == 11)
+	{
+		while (data->coor[i])
+		{
+			while (data->coor[i])
+			{
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				ft_roty(&data->coor[i]->pro, ft_rad(1));
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				data->coor[i] = data->coor[i]->next;
+			}
+			i++;
+		}
+	}
+	else if (key == 45)
+	{
+		while (data->coor[i])
+		{
+			while (data->coor[i])
+			{
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				ft_roty(&data->coor[i]->pro, ft_rad(1));
+				// printf("%f %f %f\n", data->coor[i]->model.x, data->coor[i]->model.z, data->coor[i]->model.y);
+				data->coor[i] = data->coor[i]->next;
+			}
+			i++;
+		}
+	}
 }
 
 
 int	ft_hook(int key, t_data *data)
 {
-	char	*buffer;
-	int		bit_per_pixel;
-	int		size_len;
-	int		edian;
+	char		*buffer;
+	static int	v = 0;
+	static int	p = 0;
 
 	printf("keycode == %d\n", key);
 	if (key == 53)
@@ -230,45 +285,109 @@ int	ft_hook(int key, t_data *data)
 	{
 		ft_data_reset(data);
 		ft_translation(data, key);
-		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
-		buffer = ft_memset(buffer, 0, size_len * WIDTH);
+		// buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
+		// buffer = ft_memset(buffer, 0, size_len * WIDTH);
+		ft_draw_bg(&data->ptr, 0);
 		ft_data_reset(data);
 		// ft_cameralize(data);
 		ft_draw_all_line(data);
+		mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
 	}
 	else if (key == 12 || key == 14)
 	{
 		ft_data_reset(data);
 		ft_zoom(data, key);
-		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
-		buffer = ft_memset(buffer, 0, size_len * WIDTH);
+		// buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
+		// buffer = ft_memset(buffer, 0, size_len * WIDTH);
+		ft_draw_bg(&data->ptr, 0);
 		ft_data_reset(data);
 		ft_cameralize(data);
 		ft_draw_all_line(data);
+		mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
 	}
 	else if (key == 15 || key == 3)
 	{
-		ft_data_reset(data);
-		ft_vertic(data, key);
-		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
-		buffer = ft_memset(buffer, 0, size_len * WIDTH);
-		ft_data_reset(data);
-		ft_take_pro(data);
-		ft_cameralize(data);
-		ft_draw_all_line(data);
+		if (v == 0)
+		{
+			ft_data_reset(data);
+			ft_vertic(data, key);
+			// buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
+			// buffer = ft_memset(buffer, 0, size_len * WIDTH);
+			ft_draw_bg(&data->ptr, 0);
+			ft_data_reset(data);
+			ft_take_pro(data);
+			if (p == 0)
+				ft_iso(data);
+			ft_cameralize(data);
+			ft_draw_all_line(data);
+			mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
+		}
+		else
+		{
+			if (HEIGHT >= 30 && WIDTH >= 300)
+			{
+				mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
+				mlx_string_put(data->ptr.mlx, data->ptr.win, WIDTH / 2 - 140, HEIGHT / 10, 0x00FF0000, "Press space or p to reset");
+			}
+		}
 	}
-	else if (key == 5 || key == 4)
+	else if (key == 5 || key == 4 || key == 17 || key == 16 || key == 11 || key == 45)
 	{
 		ft_data_reset(data);
 		ft_rot(data, key);
-		buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
-		buffer = ft_memset(buffer, 0, size_len * WIDTH);
+		// buffer = mlx_get_data_addr(data->ptr.img, &bit_per_pixel, &size_len, &edian);
+		// buffer = ft_memset(buffer, 0, size_len * WIDTH);
+		ft_draw_bg(&data->ptr, 0);
 		ft_data_reset(data);
 		ft_cameralize(data);
 		ft_draw_all_line(data);
+		mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
+		v = 1;
 	}
+	else if (key == 35)
+	{
+		t_model	model;
+
+		model.x = 0;
+		model.z = 0;
+		model.y = 0;
+		ft_data_reset(data);
+		ft_draw_bg(&data->ptr, 0);
+		ft_ttra(data);
+		ft_take_pro(data);		
+		if (p == 0)
+		{
+			ft_project(model, -1);
+			p = 1;
+		}
+		else if (p == 1)
+		{
+			ft_project(model, -1);
+			ft_iso(data);
+			p = 0;
+		}
+		ft_cameralize(data);
+		ft_draw_all_line(data);
+		mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
+		v = 0;
+	}
+	else if (key == 49)
+	{
+		ft_draw_bg(&data->ptr, 0);
+		ft_ttra(data);
+		ft_data_reset(data);
+		ft_take_pro(data);
+		ft_data_reset(data);
+		if (p == 0)
+			ft_iso(data);
+		ft_cameralize(data);
+		ft_draw_all_line(data);
+		mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
+		v = 0;
+	}
+
 	// ft_put_pixel(&data->ptr, x, y, 0x0000FF00);
-	mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
+	// mlx_put_image_to_window(data->ptr.mlx, data->ptr.win, data->ptr.img, 0, 0);
 	return (0);
 }
 
@@ -413,7 +532,7 @@ void	ft_cameralize(t_data *data)
 	{
 		while (data->coor[i])
 		{
-			data->coor[i]->cam = ft_project(data->coor[i]->pro, data->transfo, ft_rad(30), 1);
+			data->coor[i]->cam = ft_project(data->coor[i]->pro, 1);
 			data->coor[i]->cam.x += data->transfo.x;
 			data->coor[i]->cam.y += data->transfo.y;
 			data->coor[i] = data->coor[i]->next;
@@ -425,9 +544,6 @@ void	ft_cameralize(t_data *data)
 
 void	ft_ttra(t_data *data)
 {
-	data->transfo.rx = 0;
-	data->transfo.rz = 0;
-	data->transfo.ry = 0;
 	data->transfo.x = WIDTH / 2;
 	data->transfo.y = HEIGHT / 2;
 	data->transfo.zoom = 1;
@@ -459,6 +575,10 @@ int	main(int argc, char **argv)
 	ft_data_reset(&data);
 
 	ft_take_pro(&data);
+
+
+	ft_iso(&data);
+	
 	ft_cameralize(&data);
 	// size_t i = 0;
 	// printf("%d\n", ft_atoi_base(ft_word("FFFFFFFF"), "0123456789ABCDEF"));

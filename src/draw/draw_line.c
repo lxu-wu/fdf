@@ -1,5 +1,21 @@
 #include "../../inc/fdf.h"
 
+void	ft_draw_bg(t_ptr *ptr, int color)
+{
+	t_cam	cam1;
+	t_cam	cam2;
+
+	cam1.x = 0;
+	cam2.x = WIDTH;
+	cam1.y = 0;
+	while (cam1.y <= HEIGHT)
+	{
+		cam2.y = cam1.y;
+		ft_draw_line(cam1, cam2, color, ptr);
+		cam1.y++;
+	}
+}
+
 void	ft_put_pixel(t_ptr *ptr, long x, long y, int color)//, t_camcoor c1, t_camcoor c2)
 {
 	int 	pixel_bits;
@@ -9,7 +25,7 @@ void	ft_put_pixel(t_ptr *ptr, long x, long y, int color)//, t_camcoor c1, t_camc
 	long	pixel;
 
 	// printf("color = %d\n", color);
-	if ((x > 0 && x < WIDTH) && (y > 0 && y < HEIGHT))
+	if ((x >= 0 && x <= WIDTH) && (y >= 0 && y <= HEIGHT))
 	{
 		buffer = mlx_get_data_addr(ptr->img, &pixel_bits, &size_line, &endian);
 		pixel = round((y *  size_line) + (x * 4));
@@ -56,7 +72,7 @@ void	ft_draw_line(t_cam c1, t_cam c2, int color, t_ptr *ptr)
 			}
 		}
 	}
-	if (Dx <= Dy)
+	if (Dx < Dy)
 	{
 		while (i < Dy)
 		{
