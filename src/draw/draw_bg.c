@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   draw_bg.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/15 16:07:54 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 20:30:49 by lxu-wu           ###   ########.fr       */
+/*   Created: 2022/02/15 18:51:57 by lxu-wu            #+#    #+#             */
+/*   Updated: 2022/02/15 18:52:03 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/fdf.h"
+#include "../../inc/fdf.h"
 
-void	ft_error(int e)
+void	ft_draw_bg(t_ptr *ptr, int color)
 {
-	if (e == 1)
-		write(2, "Error\n", 6);
-	else if (e == 2)
-		write(2, "Malloc Failed\n", 14);
-	else if (e == 3)
-		perror("open: ");
-	else if (e == 4)
-		write(2, "Invalide color or use prefix 0x/0X\n", 35);
-	else
-		printf("in ft_error %d\n", e);
-	exit(1);
+	t_cam	cam1;
+	t_cam	cam2;
+
+	cam1.x = 0;
+	cam2.x = WIDTH;
+	cam1.y = 0;
+	while (cam1.y <= HEIGHT)
+	{
+		cam2.y = cam1.y;
+		ft_draw_line(cam1, cam2, color, ptr);
+		cam1.y++;
+	}
 }

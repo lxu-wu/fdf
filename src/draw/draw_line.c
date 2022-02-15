@@ -1,34 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_line.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/15 19:35:20 by lxu-wu            #+#    #+#             */
+/*   Updated: 2022/02/15 19:35:20 by lxu-wu           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/fdf.h"
 
-void	ft_draw_bg(t_ptr *ptr, int color)
+void	ft_put_pixel(t_ptr *ptr, long x, long y, int color)
 {
-	t_cam	cam1;
-	t_cam	cam2;
-
-	cam1.x = 0;
-	cam2.x = WIDTH;
-	cam1.y = 0;
-	while (cam1.y <= HEIGHT)
-	{
-		cam2.y = cam1.y;
-		ft_draw_line(cam1, cam2, color, ptr);
-		cam1.y++;
-	}
-}
-
-void	ft_put_pixel(t_ptr *ptr, long x, long y, int color)//, t_camcoor c1, t_camcoor c2)
-{
-	int 	pixel_bits;
-	int 	size_line;
-	int 	endian;
+	int		pixel_bits;
+	int		size_line;
+	int		endian;
 	char	*buffer;
 	long	pixel;
 
-	// printf("color = %d\n", color);
-	if ((x >= 0 && x <= WIDTH) && (y >= 0 && y <= HEIGHT))
+	if ((x >= 0 && x < WIDTH) && (y >= 0 && y < HEIGHT))
 	{
 		buffer = mlx_get_data_addr(ptr->img, &pixel_bits, &size_line, &endian);
-		pixel = round((y *  size_line) + (x * 4));
+		pixel = round((y * size_line) + (x * 4));
 		buffer[pixel] = color;
 		buffer[pixel + 1] = (color >> 8);
 		buffer[pixel + 2] = (color >> 16);
@@ -36,55 +31,71 @@ void	ft_put_pixel(t_ptr *ptr, long x, long y, int color)//, t_camcoor c1, t_camc
 	}
 }
 
+void	ft_d_init(t_cam c1, t_cam c2, long d[13])
+{
+	d[0] = round(c1.x);
+	d[1] = round(c2.x);
+	d[2] = round(c1.y);
+	d[3] = round(c2.y);
+	d[4] = labs(d[1] - d[0]);
+	d[5] = labs(d[3] - d[2]);
+	d[6] = labs(2 * d[4]);
+	d[7] = labs(2 * d[5]);
+	d[8] = d[4];
+	d[9] = d[5];
+	d[10] = 1;
+	d[11] = 1;
+	if (d[0] > d[1])
+		d[10] = -1;
+	if (d[2] > d[3])
+		d[11] = -1;
+}
+
+void	ft_draw_line1(long d[12], int color, t_ptr *ptr)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < d[8])
+	{
+		ft_put_pixel(ptr, d[0], d[2], color);
+		i++;
+		d[0] += d[10];
+		d[4] -= d[7];
+		if (d[4] < 0)
+		{
+			d[2] += d[11];
+			d[4] += d[6];
+		}
+	}
+}
+
+void	ft_draw_line2(long d[12], int color, t_ptr *ptr)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < d[9])
+	{
+		ft_put_pixel(ptr, d[0], d[2], color);
+		i++;
+		d[2] += d[11];
+		d[5] -= d[6];
+		if (d[5] < 0)
+		{
+			d[0] += d[10];
+			d[5] += d[7];
+		}
+	}
+}
+
 void	ft_draw_line(t_cam c1, t_cam c2, int color, t_ptr *ptr)
 {
-	long x1=round(c1.x);
-	long x2=round(c2.x);
-	long y1=round(c1.y);
-	long y2=round(c2.y);
-	long ex=labs(x2-x1);
-	long ey=labs(y2-y1);
-	long dx=labs(2 * ex);
-	long dy=labs(2 * ey);
-	long Dx=ex;
-	long Dy=ey;
-	long i=0;
-	long Xincr=1;
-	long Yincr=1;
+	long	d[12];
 
-	// printf("%ld %ld %ld %ld\n", x1, y1, x2, y2);
-	if (x1 > x2)
-		Xincr = -1;
-	if (y1 > y2)
-		Yincr = -1;
-	if (Dx >= Dy)
-	{
-		while (i < Dx)
-		{
-			ft_put_pixel(ptr, x1, y1, color);
-			i++;
-			x1 += Xincr;
-			ex -= dy;
-			if (ex < 0)
-			{
-				y1 += Yincr;
-				ex += dx;
-			}
-		}
-	}
-	if (Dx < Dy)
-	{
-		while (i < Dy)
-		{
-			ft_put_pixel(ptr, x1, y1, color);
-			i++;
-			y1 += Yincr;
-			ey -= dx;
-			if (ey < 0)
-			{
-				x1 += Xincr;
-				ey += dy;
-			}
-		}
-	}
+	ft_d_init(c1, c2, d);
+	if (d[8] >= d[9])
+		ft_draw_line1(d, color, ptr);
+	if (d[8] < d[9])
+		ft_draw_line2(d, color, ptr);
 }

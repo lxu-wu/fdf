@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   coor.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/15 19:33:14 by lxu-wu            #+#    #+#             */
+/*   Updated: 2022/02/15 19:34:30 by lxu-wu           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/fdf.h"
 
 t_coor	*ft_coornew(t_model model, int color)
@@ -7,8 +19,7 @@ t_coor	*ft_coornew(t_model model, int color)
 	coor = malloc(sizeof(t_coor));
 	if (!coor)
 		return (0);
-	coor->model = model;	
-	// coor->cam = ft_project(coor->model, ft_rad(30));
+	coor->model = model;
 	coor->color = color;
 	coor->prev = 0;
 	coor->next = 0;
@@ -17,14 +28,13 @@ t_coor	*ft_coornew(t_model model, int color)
 
 t_coor	*ft_coorlast(t_coor *coor)
 {
-	t_coor *tmp;
+	t_coor	*tmp;
 
 	tmp = coor;
 	while (tmp->next)
 		tmp = tmp->next;
 	return (tmp);
 }
-
 
 size_t	ft_coorsize(t_coor *coor)
 {
@@ -59,26 +69,3 @@ void	ft_cooradd_back(t_coor **acoor, t_coor *new)
 		}
 	}
 }
-
-void	ft_coorclear(t_coor **coor)
-{
-	t_coor	*tmp;
-
-	while (*coor)
-	{
-		tmp = *coor;
-		*coor = (*coor)->next;
-		free(tmp);
-	}
-}
-
-t_coor	*ft_coorfirst(t_coor *coor)
-{
-	t_coor *tmp;
-
-	tmp = coor;
-	while (tmp->prev)
-		tmp = tmp->prev;
-	return (tmp);
-}
-
