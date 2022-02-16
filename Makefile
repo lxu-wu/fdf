@@ -46,7 +46,7 @@ OBJS =	${SRCS:.c=.o}
 
 OBJS_BONUS =	${SRCS_BONUS:.c=.o}
 
-all:		bonus
+all:		${OBJS}
 
 $(NAME):	${OBJS}
 			@make bonus libft.a -C ./libft

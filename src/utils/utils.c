@@ -6,7 +6,7 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 19:32:01 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 20:00:59 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/16 19:54:37 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	*ft_word(char *str)
 	while (str[i] && !ft_isspace(str[i]))
 		i++;
 	word = malloc(sizeof(char) * (i + 1));
+	if (!word)
+		ft_error(2);
 	ft_strlcpy(word, str, i + 1);
 	return (word);
 }

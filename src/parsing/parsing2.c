@@ -6,7 +6,7 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 16:37:54 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 16:38:04 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/16 19:53:45 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	ft_check_str(char c, char *base)
 		i++;
 	if (c == base[i])
 		return (i);
-	printf("%c\n", c);
 	ft_error(5);
 	return (1);
 }	

@@ -6,7 +6,7 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 16:08:44 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 16:37:50 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/16 19:54:21 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_coor	**ft_get_coor(t_list *lstmap)
 
 	i = 0;
 	coor = malloc(sizeof(t_coor *) * (ft_lstsize(lstmap) + 1));
+	if (!coor)
+		ft_error(2);
 	while (lstmap)
 	{
 		coor[i] = ft_modelize(lstmap->content, i);
