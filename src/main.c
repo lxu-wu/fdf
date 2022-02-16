@@ -1,43 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/15 20:33:51 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 21:03:43 by lxu-wu           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../inc/fdf.h"
-
-int	ft_hook(int key, t_data *data)
-{
-	char		*buffer;
-	static int	v = 0;
-	static int	p = 0;
-
-	if (key == 53)
-		ft_exit(data);
-	else if (key == 0 || key == 1 || key == 2 || key == 13)
-	{
-		ft_translation(data, key);
-		ft_draw_all(data);
-	}
-	else if (key == 12 || key == 14)
-		ft_ori_zoom(data, key);
-	else if (key == 15 || key == 3)
-		ft_ori_vert(data, key, &v, &p);
-	else if (key == 5 || key == 4 || key == 17
-		|| key == 16 || key == 11 || key == 45)
-		ft_ori_rot(data, key, &v);
-	else if (key == 35)
-		ft_ori_pro(data, key, &v, &p);
-	else if (key == 49)
-		ft_ori_reset(data, key, &v, &p);
-	return (0);
-}
 
 int	ft_exit(t_data *data)
 {
@@ -55,9 +16,17 @@ int	ft_exit(t_data *data)
 		}
 		i++;
 	}
+	free(data->coor);
 	mlx_clear_window(data->ptr.mlx, data->ptr.win);
 	mlx_destroy_window(data->ptr.mlx, data->ptr.win);
 	exit(0);
+}
+
+int	ft_hook(int key, t_data *data)
+{
+	if (key == 53)
+		ft_exit(data);
+	return (0);
 }
 
 int	main(int argc, char **argv)

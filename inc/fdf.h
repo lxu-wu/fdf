@@ -6,17 +6,18 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 21:05:13 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 21:06:12 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/15 21:08:53 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "mlx.h"
+# include <mlx.h>
 # include <math.h>
 # include <fcntl.h>
 # include "../libft/libft.h"
+# include <stdio.h>
 
 # define WIDTH 1000
 # define HEIGHT 1000
