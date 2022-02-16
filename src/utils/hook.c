@@ -6,7 +6,7 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 20:47:59 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 21:04:44 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/16 17:59:18 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_ori_pro(t_data *data, int key, int *v, int *p)
 		*p = 0;
 	}
 	ft_draw_all(data);
-		*v = 0;
+	*v = 0;
 }
 
 void	ft_ori_reset(t_data *data, int key, int *v, int *p)
