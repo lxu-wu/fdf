@@ -6,7 +6,7 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 20:31:47 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 20:32:09 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/16 16:37:22 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	ft_resize_model(t_data *data)
 		while (data->coor[i])
 		{
 			data->coor[i]->model.x -= dx;
-			data->coor[i]->model.x *= HEIGHT / data->len;
+			data->coor[i]->model.x *= (double)HEIGHT / data->len;
 			data->coor[i]->model.y -= dy;
-			data->coor[i]->model.y *= HEIGHT / data->len;
+			data->coor[i]->model.y *= (double)HEIGHT / data->len;
 			data->coor[i] = data->coor[i]->next;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 21:05:13 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 21:08:53 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/16 16:36:54 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ typedef struct t_data
 	t_coor	**coor;
 	t_list	*saved;
 	t_tra	transfo;
-	size_t	len;
-	size_t	height;
+	double	len;
+	double	height;
 }	t_data;
 
 void	ft_draw_all(t_data *data);
