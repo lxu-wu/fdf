@@ -6,7 +6,7 @@
 /*   By: lxu-wu <lxu-wu@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/15 19:33:14 by lxu-wu            #+#    #+#             */
-/*   Updated: 2022/02/15 19:34:30 by lxu-wu           ###   ########.fr       */
+/*   Updated: 2022/02/23 13:35:12 by lxu-wu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_coor	*ft_coornew(t_model model, int color)
 
 	coor = malloc(sizeof(t_coor));
 	if (!coor)
-		return (0);
+		ft_error(2);
 	coor->model = model;
 	coor->color = color;
 	coor->prev = 0;
